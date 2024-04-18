@@ -10,7 +10,6 @@ export default function App() {
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
-  git;
 
   const handleSubmit = newImage => {
     setQuery(newImage);
