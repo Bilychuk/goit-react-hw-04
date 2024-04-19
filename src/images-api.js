@@ -11,5 +11,5 @@ export const fetchImages = async (query, page) => {
       client_id: 'qVQBOgkZlfAD80jmxA_6ivkJhSd28ZjPXx3b8b1wNfw',
     },
   });
-  return response.data.hits;
+  return response.data.results;
 };

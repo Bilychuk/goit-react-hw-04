@@ -1,0 +1,39 @@
+.wrapper {
+  background-color: blue;
+  padding: 10px;
+  margin: 0 auto;
+}
+
+.form {
+  position: relative;
+  margin: 0 auto;
+  width: 500px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.input {
+  width: 500px;
+  padding: 10px 10px 10px 50px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
