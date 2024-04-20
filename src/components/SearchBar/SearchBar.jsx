@@ -1,5 +1,6 @@
 import { Formik, Form, Field } from 'formik';
 import { IoIosSearch } from 'react-icons/io';
+import { toast } from 'react-hot-toast';
 import css from './SearchBar.module.css';
 
 export default function SearchBar({ onSubmit }) {
@@ -8,7 +9,11 @@ export default function SearchBar({ onSubmit }) {
       <Formik
         initialValues={{ query: '' }}
         onSubmit={(values, actions) => {
-          onSubmit(values.query);
+          if (values.query.trim() === '') {
+            toast.error('Please enter a search term.');
+          } else {
+            onSubmit(values.query);
+          }
           actions.resetForm();
         }}
       >
