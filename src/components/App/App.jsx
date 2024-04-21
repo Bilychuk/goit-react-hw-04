@@ -4,6 +4,7 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import { fetchImages } from '../../images-api.js';
 import { ThreeDots } from 'react-loader-spinner';
 import ImageModal from '../ImageModal/ImageModal.jsx';
+import toast, { Toaster } from 'react-hot-toast';
 import css from './App.module.css';
 
 export default function App() {
@@ -14,7 +15,10 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [showBtn, setShowBtn] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState('');
+  const [selectedAriaLabel, setSelectedAriaLabel] = useState('');
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [selectedAuthor, setSelectedAuthor] = useState('');
+  const [likes, setLikes] = useState('');
 
   const handleSubmit = newImage => {
     setQuery(newImage);
@@ -26,8 +30,11 @@ export default function App() {
     setPage(page + 1);
   };
 
-  const handleImageClick = imageUrl => {
+  const handleImageClick = (imageUrl, ariaLabel, author, likes) => {
     setSelectedImageUrl(imageUrl);
+    setSelectedAriaLabel(ariaLabel);
+    setSelectedAuthor(author);
+    setLikes(likes);
     setIsImageModalOpen(true);
   };
 
@@ -44,12 +51,23 @@ export default function App() {
         setError(false);
         setIsLoading(true);
         const data = await fetchImages(query, page);
+
         setImages(prevImages => {
           return [...prevImages, ...data.results];
         });
-        if (data.total_pages && data.total_pages !== page) {
-          setShowBtn(true);
+
+        if (data.total_pages === 0) {
+          toast.error('Sorry, we did not find the images.', {
+            duration: 6000,
+            position: 'bottom-right',
+          });
+        } else if (data.total_pages === 1) {
+          toast.success(`We found ${data.results.length} images!`, {
+            duration: 4000,
+            position: 'bottom-right',
+          });
         }
+        setShowBtn(data.total_pages && data.total_pages !== page);
       } catch (error) {
         setError(true);
       } finally {
@@ -92,6 +110,26 @@ export default function App() {
         isOpen={isImageModalOpen}
         onRequestClose={closeModal}
         imageUrl={selectedImageUrl}
+        ariaLabel={selectedAriaLabel}
+        author={selectedAuthor}
+        likes={likes}
+      />
+      <Toaster
+        toastOptions={{
+          style: {
+            color: 'white',
+          },
+          success: {
+            style: {
+              background: 'green',
+            },
+          },
+          error: {
+            style: {
+              background: 'red',
+            },
+          },
+        }}
       />
     </div>
   );

@@ -1,4 +1,16 @@
-.over {
-  width: 100%;
-  height: 100%;
+.image {
+  margin-bottom: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+
+.ariaLabel {
+  font-size: 20px;
 }

@@ -10,9 +10,12 @@ export default function SearchBar({ onSubmit }) {
         initialValues={{ query: '' }}
         onSubmit={(values, actions) => {
           if (values.query.trim() === '') {
-            toast.error('Please enter a search term.');
+            toast.error('Please enter a search query!', {
+              position: 'bottom-right',
+            });
+            return;
           } else {
-            onSubmit(values.query);
+            onSubmit(values.query.trim());
           }
           actions.resetForm();
         }}
