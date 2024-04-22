@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import SearchBar from '../SearchBar/SearchBar';
-import ImageGallery from '../ImageGallery/ImageGallery';
 import { fetchImages } from '../../images-api.js';
-import { ThreeDots } from 'react-loader-spinner';
-import ImageModal from '../ImageModal/ImageModal.jsx';
 import toast, { Toaster } from 'react-hot-toast';
+import SearchBar from '../SearchBar/SearchBar';
+import ImageGallery from '../ImageGallery/ImageGallery.jsx';
+import ImageModal from '../ImageModal/ImageModal.jsx';
+import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn.jsx';
+import Loader from '../Loader/Loader.jsx';
+import ErrorMessage from '../ErrorMessage/ErrorMessage.jsx';
 import css from './App.module.css';
 
 export default function App() {
@@ -67,7 +69,7 @@ export default function App() {
             position: 'bottom-right',
           });
         }
-        setShowBtn(data.total_pages && data.total_pages !== page);
+        setShowBtn(Boolean(data.total_pages && data.total_pages !== page));
       } catch (error) {
         setError(true);
       } finally {
@@ -81,30 +83,13 @@ export default function App() {
   return (
     <div className={css.container}>
       <SearchBar onSubmit={handleSubmit} />
-      {error && <b>Oops!There was an error! Please reload!</b>}
+      {error && <ErrorMessage />}
       {images.length > 0 && (
         <ImageGallery images={images} onImageClick={handleImageClick} />
       )}
-      {isLoading && (
-        <div className={css.loaderContainer}>
-          <ThreeDots
-            visible={true}
-            height="80"
-            width="80"
-            color="#4fa94d"
-            radius="9"
-            ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClass=""
-          />
-        </div>
-      )}
+      {isLoading && <Loader />}
       {showBtn && images.length > 0 && !isLoading && (
-        <div className={css.loadMoreContainer}>
-          <button className={css.loadMoreBtn} onClick={handleLoadMore}>
-            Load more images
-          </button>
-        </div>
+        <LoadMoreBtn onClick={handleLoadMore} />
       )}
       <ImageModal
         isOpen={isImageModalOpen}
